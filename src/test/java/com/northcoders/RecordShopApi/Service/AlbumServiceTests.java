@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -62,5 +63,16 @@ public class AlbumServiceTests {
         Optional<Album> album = mockAlbumServiceImpl.getAlbumById(2L);
 
         assertEquals(albums.get(2).getId(), album.get().getId());
+    }
+
+    @Test
+    @DisplayName("POST album, returns the appropriate album")
+    public void postAlbumTest() {
+        var album = new Album(1L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics");
+
+        when(albumGenreRepository.save(album)).thenReturn(album);
+        Album actualResult = mockAlbumServiceImpl.insertAlbum(album);
+
+        assertEquals(actualResult, album);
     }
 }
