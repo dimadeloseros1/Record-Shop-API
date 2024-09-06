@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -45,5 +46,21 @@ public class AlbumServiceTests {
         assertNotNull(albums);
         assertEquals(3, actualAlbums.size());
         assertEquals(albums, actualAlbums);
+    }
+
+    @Test
+    @DisplayName("GET album by id, returns album by specific id")
+    public void getAlbumByIdTest() {
+        List<Album> albums = new ArrayList<>(List.of(
+                new Album(1L, 1, "Ferry Corsten", 1997, Genre.TRANCE, "Rank 1"),
+                new Album(2L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics"),
+                new Album(3L, 1, "Tiesto", 1997, Genre.TRANCE, "Gold Age Of Trance")
+        ));
+
+        when(albumGenreRepository.findById(2L)).thenReturn(Optional.of(albums.get(2)));
+
+        Optional<Album> album = mockAlbumServiceImpl.getAlbumById(2L);
+
+        assertEquals(albums.get(2).getId(), album.get().getId());
     }
 }
