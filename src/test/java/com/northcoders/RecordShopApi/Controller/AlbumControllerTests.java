@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -102,6 +103,22 @@ public class AlbumControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @Test
+    @DisplayName("POST album successfully & verify that the album is stored in the H2")
+    public void postAlbumTest() throws Exception{
+        var album = new Album(1L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics");
+
+
+        when(mockAlbumServiceImpl.insertAlbum(album)).thenReturn((album));
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.post("/api/v1/albums")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(album)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(mockAlbumServiceImpl, times(1)).insertAlbum(album);
+    }
 }
 
 
