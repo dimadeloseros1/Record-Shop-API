@@ -58,7 +58,7 @@ public class AlbumControllerTests {
         when(mockAlbumServiceImpl.getAllAlbums()).thenReturn(albums);
 
         this.mockMvcController.perform(
-                MockMvcRequestBuilders.get("/api/v1/albums"))
+                        MockMvcRequestBuilders.get("/api/v1/albums"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].artist").value("Ferry Corsten"))
@@ -70,7 +70,7 @@ public class AlbumControllerTests {
 
     @Test
     @DisplayName("GET album by id")
-    public void getAlbumByIdTest() throws  Exception {
+    public void getAlbumByIdTest() throws Exception {
         List<Album> albums = new ArrayList<>(List.of(
                 new Album(1L, 1, "Ferry Corsten", 1997, Genre.TRANCE, "Rank 1"),
                 new Album(2L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics"),
@@ -83,10 +83,23 @@ public class AlbumControllerTests {
         when(mockAlbumServiceImpl.getAlbumById(1L)).thenReturn(Optional.ofNullable(albums.getFirst()));
 
         this.mockMvcController.perform(
-                MockMvcRequestBuilders.get("/api/v1/albums/1"))
+                        MockMvcRequestBuilders.get("/api/v1/albums/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath(".id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath(".albumName").value("Rank 1"));
+    }
+
+    @Test
+    @DisplayName("GET album by id returns 404")
+    public void getAlbumByIdReturn404Test() throws Exception{
+        List<Album> album = new ArrayList<>();
+        album.add(new Album(1L, 2, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics"));
+
+        when(mockAlbumServiceImpl.getAlbumById(1L)).thenReturn(Optional.empty());
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.get("/api/v1/albums/2"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
 }
