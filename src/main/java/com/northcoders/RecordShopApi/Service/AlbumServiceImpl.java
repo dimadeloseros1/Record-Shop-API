@@ -28,5 +28,10 @@ public class AlbumServiceImpl implements AlbumService {
         return Optional.ofNullable(albumGenreRepository.findById(id).orElseThrow(RuntimeException::new));
     }
 
+    @Override
+    public Album insertAlbum(Album album) {
+        return albumGenreRepository.save(album);
+    }
+
 
 }
