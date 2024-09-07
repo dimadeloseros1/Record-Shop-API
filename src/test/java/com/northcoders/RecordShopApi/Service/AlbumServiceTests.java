@@ -15,9 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class AlbumServiceTests {
@@ -74,5 +75,27 @@ public class AlbumServiceTests {
         Album actualResult = mockAlbumServiceImpl.insertAlbum(album);
 
         assertEquals(actualResult, album);
+    }
+
+    @Test
+    @DisplayName("Update album, returns appropriate updated album")
+    public void updateAlbumTest() {
+        var album = new Album(1L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics");
+        var updatedAlbum = new Album(1L, 2, "Chicane", 1997, Genre.TRANCE, "Trance Classics");
+
+        when(albumGenreRepository.findById(1L)).thenReturn(Optional.of(album));
+        when(albumGenreRepository.save(album)).thenReturn(updatedAlbum);
+
+        Optional<Album> actualResult = mockAlbumServiceImpl.updateAlbum(1L, updatedAlbum);
+
+        assertThat(actualResult).isPresent();
+        assertThat(actualResult.get().getGenre()).isEqualTo(updatedAlbum.getGenre());
+        assertThat(actualResult.get().getStock()).isEqualTo(updatedAlbum.getStock());
+        assertThat(actualResult.get().getArtist()).isEqualTo(updatedAlbum.getArtist());
+        assertThat(actualResult.get().getReleaseYear()).isEqualTo(updatedAlbum.getReleaseYear());
+        assertThat(actualResult.get().getAlbumName()).isEqualTo(updatedAlbum.getAlbumName());
+
+        verify(albumGenreRepository, times(1)).findById(1L);
+        verify(albumGenreRepository, times(1)).save(album);
     }
 }
