@@ -92,32 +92,72 @@ public class AlbumControllerTests {
 
     @Test
     @DisplayName("GET album by id returns 404")
-    public void getAlbumByIdReturn404Test() throws Exception{
+    public void getAlbumByIdReturn404Test() throws Exception {
         List<Album> album = new ArrayList<>();
         album.add(new Album(1L, 2, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics"));
 
         when(mockAlbumServiceImpl.getAlbumById(1L)).thenReturn(Optional.empty());
 
         this.mockMvcController.perform(
-                MockMvcRequestBuilders.get("/api/v1/albums/2"))
+                        MockMvcRequestBuilders.get("/api/v1/albums/2"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @DisplayName("POST album successfully & verify that the album is stored in the H2")
-    public void postAlbumTest() throws Exception{
+    public void postAlbumTest() throws Exception {
         var album = new Album(1L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics");
 
 
-        when(mockAlbumServiceImpl.insertAlbum(album)).thenReturn((album));
+        when(mockAlbumServiceImpl.insertAlbum(album)).thenReturn(album);
 
         this.mockMvcController.perform(
-                MockMvcRequestBuilders.post("/api/v1/albums")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(album)))
+                        MockMvcRequestBuilders.post("/api/v1/albums")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(album)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         verify(mockAlbumServiceImpl, times(1)).insertAlbum(album);
+    }
+
+    @Test
+    @DisplayName("Update album by id")
+    public void updateAlbumByIdTest() throws Exception {
+        var album = new Album(1L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics");
+        var album1 = new Album(1L, 2, "Boswell", 2003, Genre.HOUSE, "House Classics");
+
+        when(mockAlbumServiceImpl.updateAlbum(1L, album1)).thenReturn(Optional.of(album1));
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.put("/api/v1/albums/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(album1)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.stock").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.releaseYear").value(2003))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artist").value("Boswell"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value("HOUSE"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("House Classics"));
+
+        verify(mockAlbumServiceImpl, times(1)).updateAlbum(1L, album1);
+
+    }
+
+    @Test
+    @DisplayName("Update album, return 404 if is empty")
+    public void updateAlbumByIdTest404() throws Exception {
+        var album = new Album(1L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics");
+
+        when(mockAlbumServiceImpl.updateAlbum(1L, album)).thenReturn(Optional.empty());
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.put("/api/v1/albums/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(album)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+        verify(mockAlbumServiceImpl, times(1)).updateAlbum(1L, album);
     }
 }
 
