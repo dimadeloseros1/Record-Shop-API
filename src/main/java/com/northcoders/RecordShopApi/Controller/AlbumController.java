@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,5 +53,19 @@ public class AlbumController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("albums", "/api/v1/albums" + updateAlbums.get().getId().toString());
         return new ResponseEntity<>(updateAlbums.get(), httpHeaders, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteAlbum(@PathVariable Long id) {
+
+        Optional<Album> deleteAlbum = albumService.deleteAlbum(id);
+
+        if (deleteAlbum.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.remove("album");
+        return new ResponseEntity<>(httpHeaders, HttpStatus.NO_CONTENT);
     }
 }

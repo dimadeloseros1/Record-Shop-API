@@ -49,5 +49,16 @@ public class AlbumServiceImpl implements AlbumService {
         return updateAlbum;
     }
 
+    @Override
+    public Optional<Album> deleteAlbum(Long id) {
+        Optional<Album> album = albumGenreRepository.findById(id);
+
+        if (album.isPresent()) {
+            albumGenreRepository.deleteById(album.get().getId());
+        }
+
+        return album;
+    }
+
 
 }
