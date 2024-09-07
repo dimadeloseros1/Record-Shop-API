@@ -9,4 +9,5 @@ public interface AlbumService {
     List<Album> getAllAlbums();
     Optional<Album> getAlbumById(Long id);
     Album insertAlbum(Album album);
+    Optional<Album> updateAlbum(Long id, Album album);
 }
