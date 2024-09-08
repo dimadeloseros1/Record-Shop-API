@@ -159,6 +159,38 @@ public class AlbumControllerTests {
 
         verify(mockAlbumServiceImpl, times(1)).updateAlbum(1L, album);
     }
+
+    @Test
+    @DisplayName("Deleted album by id correctly")
+    public void deleteAlbumByIdTest() throws Exception{
+        var album = new Album(1L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics");
+
+        when(mockAlbumServiceImpl.deleteAlbum(album.getId())).thenReturn(Optional.of(album));
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.delete("/api/v1/albums/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(album)))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        verify(mockAlbumServiceImpl, times(1)).deleteAlbum(1L);
+    }
+
+    @Test
+    @DisplayName("Deleted album by id 404")
+    public void deleteAlbumByIdTest404() throws Exception{
+        var album = new Album(1L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics");
+
+        when(mockAlbumServiceImpl.deleteAlbum(album.getId())).thenReturn(Optional.empty());
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.delete("/api/v1/albums/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(album)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+        verify(mockAlbumServiceImpl, times(1)).deleteAlbum(1L);
+    }
 }
 
 
