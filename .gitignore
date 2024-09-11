@@ -33,4 +33,6 @@ build/
 .vscode/
 
 ### Properties ###
-application-prod.properties
+*-application.properties
+*-prod.properties
+*-dev.properties
