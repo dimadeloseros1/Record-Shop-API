@@ -21,9 +21,10 @@
   
   Clone the project *https://github.com/dimadeloseros1/Record-Shop-API.git*
   
-  run mvn clean install
+    run: mvn clean install
+        
+    run: mvn build
   
-  run mvn build
   
 ## Navigation
 
