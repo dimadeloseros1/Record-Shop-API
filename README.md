@@ -28,7 +28,7 @@
   
 ## Navigation
 
-  Navigite to src/java/com/northcoders.RecordShopApi/RecordShopApiApplication
+  Navigite to src/java/com.northcoders.RecordShopApi/RecordShopApiApplication
   
   Click on RUN
 
