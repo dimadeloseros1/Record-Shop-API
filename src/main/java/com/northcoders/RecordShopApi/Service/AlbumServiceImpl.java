@@ -25,6 +25,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public Optional<Album> getAlbumById(Long id) {
+
         return Optional.ofNullable(albumGenreRepository.findById(id).orElseThrow(RuntimeException::new));
     }
 

@@ -36,3 +36,4 @@ build/
 *-application.properties
 *-prod.properties
 *-dev.properties
+*-rds.properties
