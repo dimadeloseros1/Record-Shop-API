@@ -98,4 +98,15 @@ public class AlbumServiceTests {
         verify(albumGenreRepository, times(1)).findById(1L);
         verify(albumGenreRepository, times(1)).save(album);
     }
+
+    @Test
+    @DisplayName("Deletes album by id successfully")
+    public void deleteAlbumTest() {
+        var album = new Album(1L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics");
+
+        when(albumGenreRepository.findById(1L)).thenReturn(Optional.of(album));
+        var deletedAlbums = mockAlbumServiceImpl.deleteAlbum(album.getId());
+
+        verify(albumGenreRepository, times(1)).deleteById(album.getId());
+    }
 }
