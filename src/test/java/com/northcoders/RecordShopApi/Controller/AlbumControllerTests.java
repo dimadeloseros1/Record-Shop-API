@@ -104,7 +104,7 @@ public class AlbumControllerTests {
     }
 
     @Test
-    @DisplayName("POST album successfully & verify that the album is stored in the H2")
+    @DisplayName("POST album successfully & verify that the album is stored in the H2 & database")
     public void postAlbumTest() throws Exception {
         var album = new Album(1L, 1, "Armin Van Buuren", 1999, Genre.TRANCE, "Trance Classics");
 
