@@ -67,5 +67,5 @@
 
  ## Future Additions
   ### Security
-  ### Enhaced Caching implementation for PUT & DELETE enpoints via CaffeineCaching library.
+  ### Enhaced Caching implementation for PUT & DELETE enpoints via the library Caffeine Cache.
   
