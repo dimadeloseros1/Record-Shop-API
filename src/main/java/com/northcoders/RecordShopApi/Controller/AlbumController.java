@@ -2,7 +2,10 @@ package com.northcoders.RecordShopApi.Controller;
 
 import com.northcoders.RecordShopApi.Model.Album;
 import com.northcoders.RecordShopApi.Service.AlbumService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/albums")
+@CacheConfig(cacheNames = "AlbumsCache")
+@Slf4j
 public class AlbumController {
 
     @Autowired
@@ -24,7 +29,9 @@ public class AlbumController {
     }
 
     @GetMapping("/{id}")
+    @Cacheable(key = "#id")
     public ResponseEntity<Album> getAlbumById(@PathVariable Long id) {
+        log.info("Getting album with id {} from db", id);
         Optional<Album> albumFound = albumService.getAlbumById(id);
 
         if (albumFound.isEmpty()) {
