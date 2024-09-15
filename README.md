@@ -5,7 +5,7 @@
   
   This application is a RESTful Web API that is deployed on AWS Elasting Beanstalk.
   Additionaliy, this application is using cache via the library: 
-      Caffeine Cache
+            Caffeine Cache
 
 
 ## Technologies Used
