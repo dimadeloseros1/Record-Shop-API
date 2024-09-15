@@ -2,6 +2,8 @@
 
   Welcome to the Record Shop Api. Here you will be able to find any genre of music which you can think of!
   You will be able to search by your favorite Artist, Genre, Album, etc.
+  
+  This application is a RESTful Web API that is deployed on AWS Elasting Beanstalk.
 
 
 ## Technologies Used
