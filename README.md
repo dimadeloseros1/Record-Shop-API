@@ -4,6 +4,8 @@
   You will be able to search by your favorite Artist, Genre, Album, etc.
   
   This application is a RESTful Web API that is deployed on AWS Elasting Beanstalk.
+  Additionaliy, this application is using cache via the library: 
+      Caffeine Cache
 
 
 ## Technologies Used
@@ -56,8 +58,13 @@
   
   #### PUT
       http://localhost:8080/api/v1/albums/1 
-
+      
   
   #### DELETE
       http://localhost:8080/api/v1/albums/1 
+
+
+ ## Future Additions
+  ### Security
+  ### Enhaced Caching implementation for PUT & DELETE enpoints via CaffeineCaching library.
   
